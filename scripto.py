@@ -1,22 +1,52 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-texto=open("dicionario2.txt","r").read()
-texto=texto.split('\n')
-nova_lista = ''
+from sys import argv
 
-i=0
-while i<len(texto):
-	
-	if ("á" in texto[i]):
-		nova_lista+=texto[i]+'\n'
-	
-	i+=1
 
-arq_out = open("dicionario3.txt","w")
-arq_out.write(nova_lista)
+TABU_CHARS = ["-", "k", "w", "y"]
+SUBST_CHARS = {
+    "á": "a",
+    "à": "a",
+    "â": "a",
+    "ã": "a",
+    "é": "e",
+    "ê": "e",
+    "í": "i",
+    "ó": "o",
+    "ô": "o",
+    "õ": "o",
+    "ú": "u",
+    "ü": "u"
+}
 
-#close(texto)
-close(arq_out)
 
-#print(texto[1])
+def main():
+    with open(argv[1], "r", encoding="ISO-8859-1") as arq_in:
+        with open(argv[2], "w") as arq_out:
+            words = set()
+
+            for line in arq_in:
+                line = line.strip()
+
+                if len(line) < 2 or line[0].isupper():
+                    continue
+
+                for tabu in TABU_CHARS:
+                    if tabu in line:
+                        line = ""
+                if not line:
+                    continue
+
+                for old, new in SUBST_CHARS.items():
+                    if old in line:
+                        line = line.replace(old, new)
+
+                if line not in words:
+                    words.add(line)
+                    arq_out.write(line)
+                    arq_out.write("\n")
+
+
+if __name__ == "__main__":
+    main()
