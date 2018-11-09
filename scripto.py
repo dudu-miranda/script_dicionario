@@ -13,6 +13,7 @@ SUBST_CHARS = {
     "é": "e",
     "ê": "e",
     "í": "i",
+    "î": "i",
     "ó": "o",
     "ô": "o",
     "õ": "o",
@@ -29,7 +30,7 @@ def main():
             for line in arq_in:
                 line = line.strip()
 
-                if len(line) < 2 or line[0].isupper():
+                if not 2 <= len(line) <= 15 or line[0].isupper():
                     continue
 
                 for tabu in TABU_CHARS:
